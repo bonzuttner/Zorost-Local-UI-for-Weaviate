@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:1.27.8
+    container_name: weaviate-local
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'admin-key,user-key'
+      AUTHENTICATION_APIKEY_USERS: 'admin,user'
+      AUTHORIZATION_RBAC_ENABLED: 'true'
+      AUTHORIZATION_RBAC_ROOT_USERS: 'admin'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: 'text2vec-openai,text2vec-cohere,text2vec-huggingface,generative-openai,generative-cohere,generative-anthropic,reranker-cohere'
+      CLIP_INFERENCE_API: 'http://weaviate-clip:8080'
+      CLUSTER_HOSTNAME: 'node1'
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    restart: unless-stopped
+    networks:
+      - weaviate-network
+
+  multi2vec-clip:
+    image: semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1
+    container_name: weaviate-clip
+    ports:
+      - "8081:8080"
+    environment:
+      ENABLE_CUDA: '0'
+    restart: unless-stopped
+    networks:
+      - weaviate-network
+
+volumes:
+  weaviate_data:
+    name: weaviate_local_data
+
+networks:
+  weaviate-network:
+    name: weaviate-local-network
+    driver: bridge
+

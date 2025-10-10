@@ -1,0 +1,19 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hexagonal outline -->
+  <path 
+    d="M50 5 L85 27.5 L85 72.5 L50 95 L15 72.5 L15 27.5 Z" 
+    stroke="#3d5a80" 
+    stroke-width="8" 
+    fill="none"
+  />
+  <!-- W shape inside -->
+  <path 
+    d="M30 35 L38 65 L45 45 L50 55 L55 45 L62 65 L70 35" 
+    stroke="#3d5a80" 
+    stroke-width="6" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>
+

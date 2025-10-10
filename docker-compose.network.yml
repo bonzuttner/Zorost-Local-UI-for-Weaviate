@@ -1,0 +1,122 @@
+# Docker Compose with Shared Network Configuration
+# Enables integration with N8N, Flowise, and other local applications
+# Developed by Zorost Intelligence
+
+version: '3.8'
+
+# Shared network for inter-application communication
+networks:
+  local-ai-network:
+    name: local-ai-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
+services:
+  weaviate:
+    image: cr.weaviate.io/semitechnologies/weaviate:1.33.0
+    container_name: weaviate-db
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      # Core Configuration
+      QUERY_DEFAULTS_LIMIT: 100
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'admin-key,user-key'
+      AUTHENTICATION_APIKEY_USERS: 'admin,user'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-openai'
+      
+      # Vectorizer Modules
+      ENABLE_MODULES: 'text2vec-openai,text2vec-cohere,text2vec-huggingface,multi2vec-clip,generative-openai,generative-cohere,backup-filesystem'
+      
+      # External API Keys (configure via environment)
+      OPENAI_APIKEY: ${OPENAI_APIKEY:-}
+      COHERE_APIKEY: ${COHERE_APIKEY:-}
+      HUGGINGFACE_APIKEY: ${HUGGINGFACE_APIKEY:-}
+      
+      # Cluster Configuration
+      CLUSTER_HOSTNAME: 'weaviate-node1'
+      CLUSTER_GOSSIP_BIND_PORT: '7100'
+      CLUSTER_DATA_BIND_PORT: '7103'
+      
+      # CORS for N8N, Flowise, and other tools
+      ORIGIN: '*'
+      
+      # Backup Configuration
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      
+      # Performance
+      QUERY_MAXIMUM_RESULTS: 10000
+      TRACK_VECTOR_DIMENSIONS: 'true'
+      
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+      - weaviate_backups:/var/lib/weaviate/backups
+    networks:
+      local-ai-network:
+        ipv4_address: 172.28.0.10
+
+  multi2vec-clip:
+    image: cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32
+    container_name: weaviate-clip
+    restart: unless-stopped
+    environment:
+      ENABLE_CUDA: 0
+    networks:
+      local-ai-network:
+        ipv4_address: 172.28.0.11
+
+  # Weaviate Console (Web UI for administration)
+  weaviate-console:
+    image: cr.weaviate.io/semitechnologies/weaviate-console:latest
+    container_name: weaviate-console
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      WEAVIATE_URL: http://weaviate:8080
+    depends_on:
+      - weaviate
+    networks:
+      local-ai-network:
+        ipv4_address: 172.28.0.12
+
+  # Next.js Application
+  weaviate-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weaviate-local-app
+    restart: unless-stopped
+    ports:
+      - "9501:9501"
+    environment:
+      - WEAVIATE_HOST=weaviate
+      - WEAVIATE_PORT=8080
+      - WEAVIATE_SCHEME=http
+      - WEAVIATE_API_KEY=admin-key
+      - NODE_ENV=production
+    depends_on:
+      - weaviate
+    networks:
+      local-ai-network:
+        ipv4_address: 172.28.0.13
+
+volumes:
+  weaviate_data:
+    name: weaviate_data
+  weaviate_backups:
+    name: weaviate_backups
+
+# Network aliases for easy discovery
+# Applications can connect using:
+# - weaviate:8080 (from within network)
+# - localhost:8080 (from host machine)
+# - 172.28.0.10:8080 (direct IP)
+

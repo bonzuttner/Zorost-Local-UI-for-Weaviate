@@ -1,0 +1,84 @@
+# ⚖️ Licensing & Legal Notices
+
+## 🧭 Project Overview
+
+This repository contains a custom **User Interface (UI)** developed by **Zorost Intelligence LLC ("Zorost")** for local and private deployments of the **Weaviate** vector database.
+
+The project's purpose is to simplify configuration, data exploration, and administration for users running Weaviate in self-hosted or on-premise environments.
+Zorost's UI communicates with Weaviate through its **public API interfaces** and does **not** modify or redistribute any proprietary or cloud-hosted Weaviate code.
+
+---
+
+## 1. Weaviate Licensing (Third-Party Component)
+
+This project integrates the open-source version of **Weaviate**, licensed under the **BSD 3-Clause License**, reproduced below for compliance and attribution:
+
+> **BSD 3-Clause License**
+> Copyright © 2017-present, Semi Technologies B.V.
+> All rights reserved.
+>
+> Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+>
+> 1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following disclaimer.
+> 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution.
+> 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+>
+> THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+---
+
+## 2. Zorost UI Licensing
+
+All original code, interfaces, documentation, and design assets created by Zorost and included in this repository are © 2025 Zorost Intelligence LLC and released under the **MIT License**, unless otherwise stated.
+
+> **MIT License**
+> Copyright © 2025 Zorost Intelligence LLC
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+## 3. Independence & Attribution
+
+* This UI is an **independent project** developed by **Zorost Intelligence LLC**.
+* **Zorost** is **not affiliated with, endorsed by, or sponsored by Semi Technologies B.V.** or the Weaviate project.
+* "Weaviate" and all related marks are trademarks of Semi Technologies B.V.
+* All other trademarks, product names, and company names or logos are the property of their respective owners.
+* Any mention of "Weaviate" in this repository refers solely to the open-source software component under its BSD license.
+
+---
+
+## 4. Redistribution & Packaging Guidance
+
+If you redistribute this UI together with a local Weaviate instance (for example, as a Docker image, binary, or installer package):
+
+1. You must include this full licensing section or the equivalent **LICENSE** files for both components.
+2. You must retain all copyright and license notices.
+3. You must not imply endorsement or partnership with Weaviate or Semi Technologies.
+4. You may describe compatibility factually (e.g., "Compatible with Weaviate v1.x") but avoid phrasing such as "Official" or "Certified by Weaviate."
+5. You may add your company branding and UI design freely; Zorost retains all copyright to the UI source code and assets.
+
+---
+
+## 5. Liability Disclaimer
+
+This software is provided **"AS IS"**, without warranties of any kind.
+Under no circumstances shall **Zorost Intelligence LLC**, its contributors, or affiliates be liable for any direct, indirect, incidental, or consequential damages arising out of the use or inability to use this software, including but not limited to loss of data, profits, or service interruption, even if advised of the possibility of such damage.
+
+---
+
+# ✅ Compliance Summary
+
+| Component                | License      | Owner                   | Your Obligation                                         |
+| ------------------------ | ------------ | ----------------------- | ------------------------------------------------------- |
+| Weaviate (backend)       | BSD 3-Clause | Semi Technologies B.V.  | Include license & disclaimer                            |
+| Zorost UI (this project) | MIT          | Zorost Intelligence LLC | Include MIT text when redistributing                    |
+| Branding / trademarks    | —            | Semi Technologies B.V.  | Use descriptive references only; no endorsement implied |
+
+---
+
+**For questions or concerns about licensing, contact: legal@zorost.com**
