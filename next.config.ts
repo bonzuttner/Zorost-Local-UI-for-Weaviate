@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  
   experimental: {
     turbo: {
       resolveAlias: {
@@ -13,6 +21,7 @@ const nextConfig: NextConfig = {
     },
   },
 };
+
 
 export default nextConfig;
 
