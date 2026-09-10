@@ -3,6 +3,16 @@
 
 import weaviate, { WeaviateClient, ApiKey } from 'weaviate-ts-client';
 
+
+
+console.log('Weaviate env:', {
+  host: process.env.WEAVIATE_HOST,
+  port: process.env.WEAVIATE_PORT,
+  scheme: process.env.WEAVIATE_SCHEME,
+  apiKeyPresent: !!process.env.WEAVIATE_API_KEY,
+  apiKeyLength: process.env.WEAVIATE_API_KEY?.length,
+});
+
 let client: WeaviateClient | null = null;
 
 export interface WeaviateConfig {
@@ -18,13 +28,31 @@ export function getWeaviateClient(config?: WeaviateConfig): WeaviateClient {
   }
 
   const defaultConfig: WeaviateConfig = {
-    host: process.env.WEAVIATE_HOST || 'localhost',
-    port: parseInt(process.env.WEAVIATE_PORT || '8080'),
+    host: process.env.WEAVIATE_HOST || 'weaviate.railway.internal',
+    port: parseInt(process.env.WEAVIATE_PORT || '8080', 10),
     scheme: (process.env.WEAVIATE_SCHEME as 'http' | 'https') || 'http',
-    apiKey: process.env.WEAVIATE_API_KEY || 'admin-key',
+    apiKey: process.env.WEAVIATE_API_KEY || undefined,
   };
 
   const finalConfig = { ...defaultConfig, ...config };
+
+  const headers: Record<string, string> = {};
+
+  if (finalConfig.apiKey) {
+    headers['Authorization'] = `Bearer ${finalConfig.apiKey}`;
+  }
+
+  if (process.env.OPENAI_API_KEY) {
+    headers['X-OpenAI-Api-Key'] = process.env.OPENAI_API_KEY;
+  }
+
+  if (process.env.COHERE_API_KEY) {
+    headers['X-Cohere-Api-Key'] = process.env.COHERE_API_KEY;
+  }
+
+  if (process.env.HUGGINGFACE_API_KEY) {
+    headers['X-HuggingFace-Api-Key'] = process.env.HUGGINGFACE_API_KEY;
+  }
 
   const clientConfig: {
     scheme: string;
@@ -38,34 +66,25 @@ export function getWeaviateClient(config?: WeaviateConfig): WeaviateClient {
 
   if (finalConfig.apiKey) {
     clientConfig.authClientSecret = new ApiKey(finalConfig.apiKey);
-    clientConfig.headers = {
-      'Authorization': `Bearer ${finalConfig.apiKey}`
-    };
   }
 
-  // Add external API keys if available
-  const headers: Record<string, string> = {};
-  
-  if (process.env.OPENAI_API_KEY) {
-    headers['X-OpenAI-Api-Key'] = process.env.OPENAI_API_KEY;
-  }
-  
-  if (process.env.COHERE_API_KEY) {
-    headers['X-Cohere-Api-Key'] = process.env.COHERE_API_KEY;
-  }
-  
-  if (process.env.HUGGINGFACE_API_KEY) {
-    headers['X-HuggingFace-Api-Key'] = process.env.HUGGINGFACE_API_KEY;
-  }
-  
   if (Object.keys(headers).length > 0) {
     clientConfig.headers = headers;
   }
+
+  console.log('Weaviate client configuration:', {
+    scheme: finalConfig.scheme,
+    host: finalConfig.host,
+    port: finalConfig.port,
+    hasApiKey: !!finalConfig.apiKey,
+  });
 
   client = weaviate.client(clientConfig);
 
   return client;
 }
+
+
 
 export async function checkWeaviateConnection(): Promise<boolean> {
   try {
