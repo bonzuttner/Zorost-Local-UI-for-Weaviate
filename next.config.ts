@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "standalone",
+
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -12,16 +14,12 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        '@': './src',
-      },
+
+  turbopack: {
+    resolveAlias: {
+      "@": "./src",
     },
   },
 };
 
-
 export default nextConfig;
-
